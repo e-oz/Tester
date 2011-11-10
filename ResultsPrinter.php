@@ -7,7 +7,7 @@ class ResultsPrinter
 	private $line_separator = "_______________";
 	/** @var Test[] */
 	private $tests = array();
-	private $print_errors_traces;
+	private $print_errors_traces = true;
 
 	public function __construct(array $tests = null)
 	{
@@ -66,7 +66,7 @@ class ResultsPrinter
 				print $br.'Errors in test '.$test->getName().': ';
 				foreach ($errors as $error)
 				{
-					print $br.$error->getCode().': "'.$error->getMessage().'" in file '.$error->getFilepath().', line '.$error->getLine();
+					print $br.'Error '.$error->getCode().': "'.$error->getMessage().'" in file '.$error->getFilepath().', line '.$error->getLine();
 					if ($this->print_errors_traces && ($trace = $error->getDebugTrace()))
 					{
 						print 'Trace: '.$br;
@@ -107,6 +107,11 @@ class ResultsPrinter
 	public function setLineSeparator($line_separator)
 	{
 		$this->line_separator = $line_separator;
+	}
+
+	public function setPrintErrorsTraces($print_errors_traces = true)
+	{
+		$this->print_errors_traces = $print_errors_traces;
 	}
 
 }

@@ -7,6 +7,8 @@ class ErrorCatcher
 	/** @var Error[] */
 	private $errors = array();
 	private $errors_types = E_ALL;
+	/** @var DebugTracer */
+	private $debug_tracer;
 
 	public function __construct()
 	{
@@ -44,7 +46,14 @@ class ErrorCatcher
 		$error->setMessage($error_message);
 		$error->setFilepath($filepath);
 		$error->setLine($line);
+		$error->setDebugTrace($this->getCurrentBacktrace());
 		$this->errors[] = $error;
+	}
+
+	private function getCurrentBacktrace()
+	{
+		if (empty($this->debug_tracer)) $this->debug_tracer = new DebugTracer();
+		return $this->debug_tracer->getCurrentBacktrace();
 	}
 
 	public function __destruct()
