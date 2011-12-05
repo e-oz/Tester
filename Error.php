@@ -13,8 +13,8 @@ class Error
 
 	public function __construct()
 	{
-		$this->timestamp = microtime(true);
-		$trace = debug_backtrace();
+		$this->timestamp   = date('d.m H:i:s');
+		$trace             = debug_backtrace();
 		$this->debug_trace = array_slice($trace, $this->debug_trace_level);
 	}
 
