@@ -6,6 +6,8 @@ class DebugTracer
 	protected $trace_max_depth = 7;
 	protected $trace_start_depth = 4;
 	protected $trace_space_separator = '|';
+	protected $trace_new_line_separator = "\n";
+	protected $max_arr_dump_lines = 5;
 
 	public function setTraceSpaceSeparator($trace_space_separator = '|')
 	{
@@ -50,7 +52,7 @@ class DebugTracer
 				{
 					if (!is_scalar($t_arg))
 					{
-						if (is_array($t_arg)) $args[] = print_r($t_arg, 1);
+						if (is_array($t_arg)) $args[] = $this->getNonRecursiveDumpOfArray($t_arg);
 						else $args[] = '[scalar]';
 					}
 					else
@@ -62,11 +64,42 @@ class DebugTracer
 				$str .= implode(', ', $args).')';
 			}
 			else  $str .= '()';
-			$str .= "\n";
+			$str .= $this->trace_new_line_separator;
 			$space .= $basespace;
 			$depth++;
 			if ($depth >= $this->trace_max_depth) break;
 		}
 		return rtrim($str);
+	}
+
+	protected function getNonRecursiveDumpOfArray($array)
+	{
+		$dump = 'array(';
+		if (!empty($array))
+		{
+			foreach ($array as $key => $value)
+			{
+				if (is_object($value)) $value = 'Object '.get_class($value);
+				$dump .= '['.$key.'] => ['.strval($value).']';
+			}
+		}
+		$dump .= ')';
+		return $dump;
+	}
+
+	/**
+	 * @param int $max_arr_dump_lines maximum elements of array in the backtrace dump
+	 */
+	public function setMaxArrDumpLines($max_arr_dump_lines)
+	{
+		$this->max_arr_dump_lines = intval($max_arr_dump_lines);
+	}
+
+	/**
+	 * @param string $trace_new_line_separator
+	 */
+	public function setTraceNewLineSeparator($trace_new_line_separator = "\n")
+	{
+		$this->trace_new_line_separator = $trace_new_line_separator;
 	}
 }
