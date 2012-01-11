@@ -75,10 +75,18 @@ class DebugTracer
 	protected function getNonRecursiveDumpOfArray($array)
 	{
 		$dump = 'array(';
+		$i    = 0;
 		if (!empty($array))
 		{
 			foreach ($array as $key => $value)
 			{
+				$dump .= $this->trace_new_line_separator;
+				$i++;
+				if ($i > $this->max_arr_dump_lines)
+				{
+					$dump .= '...';
+					break;
+				}
 				if (is_object($value)) $value = 'Object '.get_class($value);
 				$dump .= '['.$key.'] => ['.strval($value).']';
 			}
