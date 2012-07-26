@@ -1,6 +1,5 @@
 <?php
 namespace Jamm\Tester;
-
 class ResultsPrinter
 {
 	private $newline = "\n";
@@ -28,16 +27,14 @@ class ResultsPrinter
 
 	public function printFailedTests()
 	{
-		$br = $this->newline;
+		$br                   = $this->newline;
 		$all_tests_successful = true;
-
 		foreach ($this->tests as $test)
 		{
 			if (!$test->isSuccessful())
 			{
 				print $br.'Test '.$test->getName().' is failed.';
 				$all_tests_successful = false;
-
 				foreach ($test->getAssertions() as $assertion)
 				{
 					if (!$assertion->isSuccessful())
@@ -52,14 +49,14 @@ class ResultsPrinter
 					}
 				}
 			}
-
 			if ($test->hasException())
 			{
-				print $br.'Exception in test '.$test->getName().': '.$br;
-				var_dump($test->getException());
-				print $br;
+				$exception = $test->getException();
+				print $br.'Exception in test '.$test->getName().': '
+						.$br.'Message: '.$exception->getMessage()
+						.$br.'Code: '.$exception->getCode()
+						.$br;
 			}
-
 			$errors = $test->getErrors();
 			if (!empty($errors))
 			{
@@ -76,16 +73,16 @@ class ResultsPrinter
 				}
 			}
 		}
-
 		if ($all_tests_successful) print $br.'All '.count($this->tests).' tests are successful'.$br;
 	}
 
 	public function printResultsLine()
 	{
 		print $this->newline;
-
+		$assertions = 0;
 		foreach ($this->tests as $test)
 		{
+			$assertions += count($test->getAssertions());
 			if ($test->isSuccessful())
 			{
 				print '.';
@@ -95,8 +92,8 @@ class ResultsPrinter
 				print 'F';
 			}
 		}
-
 		print $this->newline;
+		print PHP_EOL.count($this->tests).' tests, '.$assertions.' assertions';
 	}
 
 	public function setNewlineSeparator($newline)

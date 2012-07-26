@@ -1,6 +1,5 @@
 <?php
 namespace Jamm\Tester;
-
 class ErrorCatcher
 {
 	private $handler_changed = false;

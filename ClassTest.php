@@ -1,6 +1,5 @@
 <?php
 namespace Jamm\Tester;
-
 /**
  * extend me
  */
@@ -11,6 +10,8 @@ class ClassTest
 	/** @var Test[] */
 	private $tests = array();
 	private $test_method_prefix = 'test';
+	private $error_expected = false;
+	private $exception_expected = false;
 
 	public function RunTests()
 	{
@@ -40,24 +41,53 @@ class ClassTest
 	{
 		$error_catcher = $this->getErrorCatcherObject();
 		$error_catcher->setUp();
+		$this->resetErrorsExpectations();
 		$test = $this->start_new_test($test_method_name);
 		$this->setUp();
 		$this->assertPreConditions();
-
+		$exception_generated = false;
 		try
 		{
 			$this->$test_method_name();
 		}
 		catch (\Exception $exception)
 		{
-			$test->setException($exception);
+			$exception_generated = true;
+			if (!$this->exception_expected)
+			{
+				$test->setException($exception);
+			}
 		}
-
-		if ($error_catcher->hasErrors()) $test->setErrors($error_catcher->getErrors());
-
+		if ($this->exception_expected && !$exception_generated)
+		{
+			$test->setSuccessful(false);
+		}
+		if ($error_catcher->hasErrors())
+		{
+			if (!$this->error_expected)
+			{
+				$test->setErrors($error_catcher->getErrors());
+			}
+		}
+		else
+		{
+			if ($this->error_expected)
+			{
+				$test->setSuccessful(false);
+				$Error = new Error();
+				$Error->setMessage("Error is expected but wasn't generated");
+				$test->setErrors([$Error]);
+			}
+		}
 		$this->assertPostConditions();
 		$this->tearDown();
 		if (!$test->isSuccessful()) $this->onNotSuccessfulTest();
+	}
+
+	private function resetErrorsExpectations()
+	{
+		$this->error_expected     = false;
+		$this->exception_expected = false;
 	}
 
 	/**
@@ -148,6 +178,16 @@ class ClassTest
 
 	protected function assertPreConditions()
 	{ }
+
+	protected function setErrorExpected($value)
+	{
+		$this->error_expected = $value;
+	}
+
+	protected function setExceptionExpected($value)
+	{
+		$this->exception_expected = $value;
+	}
 
 	protected function assertPostConditions()
 	{ }

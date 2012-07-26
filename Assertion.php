@@ -16,12 +16,10 @@ class Assertion
 	public function __construct($name = '')
 	{
 		$this->parseDebugInfo();
-
 		if (empty($name))
 		{
 			$name = $this->debug_method;
 		}
-
 		$this->name = $name;
 	}
 
@@ -67,11 +65,11 @@ class Assertion
 
 	private function parseDebugInfo()
 	{
-		$level = $this->debug_trace_level;
-		$debug_info = debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS);
-		$this->debug_line = $debug_info[$level]['line'];
+		$level              = $this->debug_trace_level;
+		$debug_info         = debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS);
+		$this->debug_line   = $debug_info[$level]['line'];
 		$this->debug_method = $debug_info[$level]['function'];
-		$this->debug_file = $debug_info[$level]['file'];
+		$this->debug_file   = $debug_info[$level]['file'];
 	}
 
 	public function getDebugFile()

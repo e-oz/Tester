@@ -13,9 +13,25 @@ class Error
 
 	public function __construct()
 	{
-		$this->timestamp   = date('d.m H:i:s');
+		$this->setInitialTime();
 		$trace             = debug_backtrace();
 		$this->debug_trace = array_slice($trace, $this->debug_trace_level);
+	}
+
+	public function setInitialTime()
+	{
+		$current_timezone = date_default_timezone_get();
+		$php_ini_timezone = ini_get('date.timezone');
+		if (!empty($php_ini_timezone) && $current_timezone!==$php_ini_timezone)
+		{
+			date_default_timezone_set($php_ini_timezone);
+			$this->timestamp = date('d.m H:i:s');
+			date_default_timezone_set($current_timezone);
+		}
+		else
+		{
+			$this->timestamp = date('d.m H:i:s');
+		}
 	}
 
 	public function setCode($code)

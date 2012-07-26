@@ -1,8 +1,8 @@
 <?php
 namespace Jamm\Tester;
-
 class Test
 {
+	/** @var \Exception */
 	private $exception;
 	private $errors;
 	/** @var Assertion[] */
@@ -30,7 +30,7 @@ class Test
 	{
 		if (!empty($exception))
 		{
-			$this->exception = $exception;
+			$this->exception  = $exception;
 			$this->successful = false;
 		}
 	}
@@ -53,7 +53,7 @@ class Test
 	{
 		if (!empty($errors))
 		{
-			$this->errors = $errors;
+			$this->errors     = $errors;
 			$this->successful = false;
 		}
 	}

@@ -52,8 +52,18 @@ class DebugTracer
 				{
 					if (!is_scalar($t_arg))
 					{
-						if (is_array($t_arg)) $args[] = $this->getNonRecursiveDumpOfArray($t_arg);
-						else $args[] = '[scalar]';
+						if (is_array($t_arg))
+						{
+							$args[] = $this->getNonRecursiveDumpOfArray($t_arg);
+						}
+						elseif (is_object($t_arg))
+						{
+							$args[] = get_class($t_arg);
+						}
+						else
+						{
+							$args[] = '[not scalar]';
+						}
 					}
 					else
 					{
