@@ -109,9 +109,16 @@ class ClassTest
 		$this->current_test->addAssertion($assertion);
 	}
 
-	public function assertEquals($tested_value, $expected_value)
+	public function assertEquals($tested_value, $expected_value, $strict = false)
 	{
-		$assertion = $this->assert($tested_value===$expected_value);
+		if ($strict)
+		{
+			$assertion = $this->assert($tested_value===$expected_value);
+		}
+		else
+		{
+			$assertion = $this->assert($tested_value==$expected_value);
+		}
 		$assertion->setExpectedResult($expected_value);
 		$assertion->setActualResult($tested_value);
 		return $assertion;
@@ -171,13 +178,16 @@ class ClassTest
 	}
 
 	public function setUpBeforeClass()
-	{ }
+	{
+	}
 
 	protected function setUp()
-	{ }
+	{
+	}
 
 	protected function assertPreConditions()
-	{ }
+	{
+	}
 
 	protected function setErrorExpected($value)
 	{
@@ -190,16 +200,20 @@ class ClassTest
 	}
 
 	protected function assertPostConditions()
-	{ }
+	{
+	}
 
 	protected function tearDown()
-	{ }
+	{
+	}
 
 	public function tearDownAfterClass()
-	{ }
+	{
+	}
 
 	protected function onNotSuccessfulTest()
-	{ }
+	{
+	}
 
 	public function getTests()
 	{
