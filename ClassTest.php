@@ -76,7 +76,7 @@ class ClassTest
 				$test->setSuccessful(false);
 				$Error = new Error();
 				$Error->setMessage("Error is expected but wasn't generated");
-				$test->setErrors([$Error]);
+				$test->setErrors(array($Error));
 			}
 		}
 		$this->assertPostConditions();
