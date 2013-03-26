@@ -111,4 +111,19 @@ class ResultsPrinter
 		$this->print_errors_traces = $print_errors_traces;
 	}
 
+	/**
+	 * Will return 1 if at least one of tests is not passed, 0 if all tests are successful
+	 * @return int
+	 */
+	public function getExitStatusCode()
+	{
+		foreach ($this->tests as $test_result)
+		{
+			if (!$test_result->isSuccessful())
+			{
+				return 1;
+			}
+		}
+		return 0;
+	}
 }
