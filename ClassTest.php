@@ -156,6 +156,38 @@ class ClassTest
 		return $assertion;
 	}
 
+	public function assertIsNumeric($numeric)
+	{
+		$assertion = $this->assert(is_numeric($numeric));
+		$assertion->setExpectedResult(true);
+		$assertion->setActualResult(gettype($numeric));
+		return $assertion;
+	}
+
+	public function assertIsValueOfType($value, $type)
+	{
+		$assertion = $this->assert($type===gettype($value));
+		$assertion->setExpectedResult($type);
+		$assertion->setActualResult(gettype($value));
+		return $assertion;
+	}
+
+	public function assertIsObject($value)
+	{
+		$assertion = $this->assert(is_object($value));
+		$assertion->setExpectedResult('object');
+		$assertion->setActualResult(gettype($value));
+		return $assertion;
+	}
+
+	public function assertIsScalar($value)
+	{
+		$assertion = $this->assert(is_scalar($value));
+		$assertion->setExpectedResult('scalar');
+		$assertion->setActualResult(gettype($value));
+		return $assertion;
+	}
+
 	protected function getNewAssertionObject()
 	{
 		return new Assertion();
