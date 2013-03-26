@@ -128,4 +128,10 @@ class ResultsPrinter
 		}
 		return 0;
 	}
+
+	public function printAndExit()
+	{
+		$this->printResultsLine();
+		exit($this->getExitStatusCode(true));
+	}
 }
