@@ -113,14 +113,16 @@ class ResultsPrinter
 
 	/**
 	 * Will return 1 if at least one of tests is not passed, 0 if all tests are successful
+	 * @param bool $print_failed_tests
 	 * @return int
 	 */
-	public function getExitStatusCode()
+	public function getExitStatusCode($print_failed_tests = true)
 	{
 		foreach ($this->tests as $test_result)
 		{
 			if (!$test_result->isSuccessful())
 			{
+				$this->printFailedTests();
 				return 1;
 			}
 		}
