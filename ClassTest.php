@@ -12,6 +12,7 @@ class ClassTest
 	private $test_method_prefix = 'test';
 	private $error_expected = false;
 	private $exception_expected = false;
+	private $skip_tests = array();
 
 	public function RunTests()
 	{
@@ -25,7 +26,32 @@ class ClassTest
 		$methods = get_class_methods($this);
 		foreach ($methods as $method)
 		{
+			if (!empty($this->skip_tests[$method]))
+			{
+				continue;
+			}
 			if (strpos($method, $this->test_method_prefix)===0) $this->RunTestMethod($method);
+		}
+	}
+
+	public function skipTest($method_name)
+	{
+		$this->skip_tests[$method_name] = 1;
+	}
+
+	public function skipAllExcept($method_name)
+	{
+		$methods = get_class_methods($this);
+		foreach ($methods as $method)
+		{
+			if ($method===$method_name)
+			{
+				continue;
+			}
+			if (strpos($method, $this->test_method_prefix)===0)
+			{
+				$this->skip_tests[$method] = 1;
+			}
 		}
 	}
 
