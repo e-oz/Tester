@@ -55,6 +55,8 @@ class ResultsPrinter
 				print $br.'Exception in test '.$test->getName().': '
 						.$br.'Message: '.$exception->getMessage()
 						.$br.'Code: '.$exception->getCode()
+						.$br.'Line: '.$exception->getLine()
+						.$br.'Trace: '.$exception->getTraceAsString()
 						.$br;
 			}
 			$errors = $test->getErrors();
