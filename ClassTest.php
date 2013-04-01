@@ -41,7 +41,8 @@ class ClassTest
 
 	public function skipAllExcept($method_name)
 	{
-		$methods = get_class_methods($this);
+		$methods          = get_class_methods($this);
+		$this->skip_tests = array();
 		foreach ($methods as $method)
 		{
 			if ($method===$method_name)
@@ -53,6 +54,20 @@ class ClassTest
 				$this->skip_tests[$method] = 1;
 			}
 		}
+	}
+
+	public function skipAllExceptLast()
+	{
+		$methods          = get_class_methods($this);
+		$this->skip_tests = array();
+		foreach ($methods as $method)
+		{
+			if (strpos($method, $this->test_method_prefix)===0)
+			{
+				$this->skip_tests[$method] = 1;
+			}
+		}
+		array_pop($this->skip_tests);
 	}
 
 	private function start_new_test($name)
