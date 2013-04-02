@@ -185,7 +185,7 @@ class ClassTest
 	{
 		$assertion = $this->assert(is_a($tested_object, $expected_class_name));
 		$assertion->setExpectedResult($expected_class_name);
-		$assertion->setActualResult(gettype($tested_object));
+		$assertion->setActualResult(get_class($tested_object));
 		return $assertion;
 	}
 
