@@ -35,7 +35,16 @@ class Assertion
 
 	public function addCommentary($commentary)
 	{
+		if (is_scalar($commentary))
+		{
+			$commentary = print_r($commentary, 1);
+		}
+		if (!empty($this->commentary))
+		{
+			$this->commentary .= PHP_EOL;
+		}
 		$this->commentary .= $commentary;
+		return $this;
 	}
 
 	public function getCommentary()
