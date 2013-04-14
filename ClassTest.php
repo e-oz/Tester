@@ -34,9 +34,16 @@ class ClassTest
 		}
 	}
 
-	public function skipTest($method_name)
+	public function skipTest($method_names)
 	{
-		$this->skip_tests[$method_name] = 1;
+		if (!is_array($method_names))
+		{
+			$method_names = array($method_names);
+		}
+		foreach ($method_names as $method_name)
+		{
+			$this->skip_tests[$method_name] = 1;
+		}
 	}
 
 	/**
