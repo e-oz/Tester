@@ -35,7 +35,7 @@ class Assertion
 
 	public function addCommentary($commentary)
 	{
-		if (is_scalar($commentary))
+		if (!is_scalar($commentary))
 		{
 			$commentary = print_r($commentary, 1);
 		}
