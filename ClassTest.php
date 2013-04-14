@@ -39,13 +39,20 @@ class ClassTest
 		$this->skip_tests[$method_name] = 1;
 	}
 
-	public function skipAllExcept($method_name)
+	/**
+	 * @param string|array $method_names
+	 */
+	public function skipAllExcept($method_names)
 	{
+		if (!is_array($method_names))
+		{
+			$method_names = array($method_names);
+		}
 		$methods          = get_class_methods($this);
 		$this->skip_tests = array();
 		foreach ($methods as $method)
 		{
-			if ($method===$method_name)
+			if (in_array($method, $method_names))
 			{
 				continue;
 			}
