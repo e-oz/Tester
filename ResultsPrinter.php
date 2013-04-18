@@ -125,7 +125,10 @@ class ResultsPrinter
 		{
 			if (!$test_result->isSuccessful())
 			{
-				$this->printFailedTests();
+				if ($print_failed_tests)
+				{
+					$this->printFailedTests();
+				}
 				return 1;
 			}
 		}
