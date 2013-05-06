@@ -97,7 +97,14 @@ class DebugTracer
 					$dump .= '...';
 					break;
 				}
-				if (is_object($value)) $value = 'Object '.get_class($value);
+				if (is_object($value))
+				{
+					$value = 'Object '.get_class($value);
+				}
+				elseif (is_array($value))
+				{
+					$value = print_r($value, 1);
+				}
 				$dump .= '['.$key.'] => ['.strval($value).']';
 			}
 		}
