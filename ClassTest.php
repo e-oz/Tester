@@ -13,6 +13,7 @@ class ClassTest
   private $error_expected = false;
   private $exception_expected = false;
   private $skip_tests = array();
+  private $length_array_keys_in_actual = 10;
 
   public function RunTests()
   {
@@ -115,7 +116,7 @@ class ClassTest
     }
     $assertion = $this->assert(array_key_exists($key, $array));
     $assertion->setExpectedResult($key);
-    $assertion->setActualResult(array_keys($array));
+    $assertion->setActualResult($this->getArrayKeysForActualResultPrint($array));
     return $assertion;
   }
 
@@ -140,7 +141,7 @@ class ClassTest
 
     $assertion = $this->assert($all_successful);
     $assertion->setExpectedResult($keys);
-    $assertion->setActualResult(array_keys($array));
+    $assertion->setActualResult($this->getArrayKeysForActualResultPrint($array));
     if (!empty($not_found)) {
       $assertion->addCommentary('not found keys: '.implode(', ', $not_found));
     }
@@ -168,7 +169,7 @@ class ClassTest
     return $assertion;
   }
 
-  public function assertGreaterOrEqualThan($value, $greater_than)
+  public function assertGreaterThanOrEqual($value, $greater_than)
   {
     $assertion = $this->assert($value >= $greater_than);
     $assertion->setExpectedResult('>= '.$greater_than);
@@ -184,7 +185,7 @@ class ClassTest
     return $assertion;
   }
 
-  public function assertLessOrEqualThan($value, $less_than)
+  public function assertLessThanOrEqual($value, $less_than)
   {
     $assertion = $this->assert($value <= $less_than);
     $assertion->setExpectedResult('<= '.$less_than);
@@ -280,6 +281,14 @@ class ClassTest
   public function setTestMethodPrefix($test_method_prefix)
   {
     $this->test_method_prefix = $test_method_prefix;
+  }
+
+  /**
+   * @param int $length_array_keys_in_actual
+   */
+  protected function setLengthArrayKeysInActual($length_array_keys_in_actual)
+  {
+    $this->length_array_keys_in_actual = $length_array_keys_in_actual;
   }
 
   protected function RunAllTestsOfClass()
@@ -414,5 +423,22 @@ class ClassTest
   {
     if (empty($this->current_test)) $this->start_new_test($assertion->getName());
     $this->current_test->addAssertion($assertion);
+  }
+
+  private function getArrayKeysForActualResultPrint(&$array)
+  {
+    $keys = array_keys($array);
+    if (sizeof($keys) > $this->length_array_keys_in_actual) {
+      $str_keys = implode(', ', array_slice($keys, 0, $this->length_array_keys_in_actual)).' ...';
+    }
+    else {
+      if (!empty($keys)) {
+        $str_keys = implode(', ', $keys).' ...';
+      }
+      else {
+        $str_keys = '0 keys';
+      }
+    }
+    return $str_keys;
   }
 }
