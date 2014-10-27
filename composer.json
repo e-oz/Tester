@@ -4,7 +4,7 @@
     "php": ">=5.3.0"
   },
   "description": "Unit-testing module (better than PHPUnit)",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "keywords": [
     "xunit",
     "unit-testing"

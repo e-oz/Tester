@@ -128,7 +128,7 @@ class ClassTest
       return $this->assertIsArray($keys);
     }
     $all_successful = true;
-    $not_found      = [];
+    $not_found      = array();
     if (!empty($keys)) {
       foreach ($keys as $key) {
         $a = $this->assertArrayHasKey($array, $key);
