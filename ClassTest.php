@@ -114,8 +114,8 @@ class ClassTest
       return $this->assertIsArray($array);
     }
     $assertion = $this->assert(array_key_exists($key, $array));
-    $assertion->setExpectedResult(true);
-    $assertion->setActualResult(array_key_exists($key, $array));
+    $assertion->setExpectedResult($key);
+    $assertion->setActualResult(array_keys($array));
     return $assertion;
   }
 
@@ -131,8 +131,7 @@ class ClassTest
     $not_found      = array();
     if (!empty($keys)) {
       foreach ($keys as $key) {
-        $a = $this->assertArrayHasKey($array, $key);
-        if (!$a->isSuccessful()) {
+        if (!array_key_exists($key, $array)) {
           $all_successful = false;
           $not_found[]    = $key;
         }
@@ -140,8 +139,8 @@ class ClassTest
     }
 
     $assertion = $this->assert($all_successful);
-    $assertion->setExpectedResult(true);
-    $assertion->setActualResult($all_successful);
+    $assertion->setExpectedResult($keys);
+    $assertion->setActualResult(array_keys($array));
     if (!empty($not_found)) {
       $assertion->addCommentary('not found keys: '.implode(', ', $not_found));
     }
