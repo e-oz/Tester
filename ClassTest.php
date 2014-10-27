@@ -433,7 +433,7 @@ class ClassTest
     }
     else {
       if (!empty($keys)) {
-        $str_keys = implode(', ', $keys).' ...';
+        $str_keys = implode(', ', $keys).' ... and '.(sizeof($keys) - $this->length_array_keys_in_actual).' more keys';
       }
       else {
         $str_keys = '0 keys';
