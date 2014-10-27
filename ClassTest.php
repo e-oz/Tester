@@ -108,7 +108,7 @@ class ClassTest
     return $assertion;
   }
 
-  public function assertArrayHasKey($array, $key)
+  public function assertArrayHasKey(&$array, $key)
   {
     if (!is_array($array)) {
       return $this->assertIsArray($array);
@@ -119,7 +119,41 @@ class ClassTest
     return $assertion;
   }
 
-  public function assertIsArray($array)
+  public function assertArrayHasKeys(&$array, $keys)
+  {
+    if (!is_array($array)) {
+      return $this->assertIsArray($array);
+    }
+    if (!is_array($keys)) {
+      return $this->assertIsArray($keys);
+    }
+    $all_successful = true;
+    $not_found      = [];
+    if (!empty($keys)) {
+      foreach ($keys as $key) {
+        $a = $this->assertArrayHasKey($array, $key);
+        if (!$a->isSuccessful()) {
+          $all_successful = false;
+          $not_found[]    = $key;
+        }
+      }
+    }
+
+    $assertion = $this->assert($all_successful);
+    $assertion->setExpectedResult(true);
+    $assertion->setActualResult($all_successful);
+    if (!empty($not_found)) {
+      $assertion->addCommentary('not found keys: '.implode(', ', $not_found));
+    }
+    return $assertion;
+  }
+
+  public function assertArrayHasSameKeys(&$array, $array_with_expected_keys)
+  {
+    return $this->assertArrayHasKeys($array, array_keys($array_with_expected_keys));
+  }
+
+  public function assertIsArray(&$array)
   {
     $assertion = $this->assert(is_array($array));
     $assertion->setExpectedResult('array');
@@ -175,7 +209,7 @@ class ClassTest
     return $assertion;
   }
 
-  public function assertIsNotEmpty($value)
+  public function assertIsNotEmpty(&$value)
   {
     $assertion = $this->assert(!empty($value));
     $assertion->setExpectedResult(true);
@@ -183,7 +217,7 @@ class ClassTest
     return $assertion;
   }
 
-  public function assertIsNull($value)
+  public function assertIsNull(&$value)
   {
     $assertion = $this->assert(is_null($value));
     $assertion->setExpectedResult(true);
@@ -191,7 +225,7 @@ class ClassTest
     return $assertion;
   }
 
-  public function assertIsNotNull($value)
+  public function assertIsNotNull(&$value)
   {
     $assertion = $this->assert(!is_null($value));
     $assertion->setExpectedResult(true);
@@ -199,7 +233,7 @@ class ClassTest
     return $assertion;
   }
 
-  public function assertIsValueOfType($value, $type)
+  public function assertIsValueOfType(&$value, $type)
   {
     $assertion = $this->assert($type === gettype($value));
     $assertion->setExpectedResult($type);
