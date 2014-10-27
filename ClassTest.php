@@ -127,6 +127,38 @@ class ClassTest
     return $assertion;
   }
 
+  public function assertGreaterThan($value, $greater_than)
+  {
+    $assertion = $this->assert($value > $greater_than);
+    $assertion->setExpectedResult('> '.$greater_than);
+    $assertion->setActualResult($value);
+    return $assertion;
+  }
+
+  public function assertGreaterOrEqualThan($value, $greater_than)
+  {
+    $assertion = $this->assert($value >= $greater_than);
+    $assertion->setExpectedResult('>= '.$greater_than);
+    $assertion->setActualResult($value);
+    return $assertion;
+  }
+
+  public function assertLessThan($value, $less_than)
+  {
+    $assertion = $this->assert($value < $less_than);
+    $assertion->setExpectedResult('< '.$less_than);
+    $assertion->setActualResult($value);
+    return $assertion;
+  }
+
+  public function assertLessOrEqualThan($value, $less_than)
+  {
+    $assertion = $this->assert($value <= $less_than);
+    $assertion->setExpectedResult('<= '.$less_than);
+    $assertion->setActualResult($value);
+    return $assertion;
+  }
+
   public function assertIsNumeric($numeric)
   {
     $assertion = $this->assert(is_numeric($numeric));
@@ -135,10 +167,58 @@ class ClassTest
     return $assertion;
   }
 
+  public function assertIsEmpty($value)
+  {
+    $assertion = $this->assert(empty($value));
+    $assertion->setExpectedResult(true);
+    $assertion->setActualResult(print_r($value, 1));
+    return $assertion;
+  }
+
+  public function assertIsNotEmpty($value)
+  {
+    $assertion = $this->assert(!empty($value));
+    $assertion->setExpectedResult(true);
+    $assertion->setActualResult(print_r($value, 1));
+    return $assertion;
+  }
+
+  public function assertIsNull($value)
+  {
+    $assertion = $this->assert(is_null($value));
+    $assertion->setExpectedResult(true);
+    $assertion->setActualResult(print_r($value, 1));
+    return $assertion;
+  }
+
+  public function assertIsNotNull($value)
+  {
+    $assertion = $this->assert(!is_null($value));
+    $assertion->setExpectedResult(true);
+    $assertion->setActualResult(print_r($value, 1));
+    return $assertion;
+  }
+
   public function assertIsValueOfType($value, $type)
   {
     $assertion = $this->assert($type === gettype($value));
     $assertion->setExpectedResult($type);
+    $assertion->setActualResult(gettype($value));
+    return $assertion;
+  }
+
+  public function assertIsCallable($value)
+  {
+    $assertion = $this->assert(is_callable($value));
+    $assertion->setExpectedResult(true);
+    $assertion->setActualResult(gettype($value));
+    return $assertion;
+  }
+
+  public function assertIsResource($value)
+  {
+    $assertion = $this->assert(is_resource($value));
+    $assertion->setExpectedResult(true);
     $assertion->setActualResult(gettype($value));
     return $assertion;
   }
