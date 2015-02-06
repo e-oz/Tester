@@ -3,7 +3,7 @@ namespace Jamm\Tester;
 
 class TestsRunner
 {
-  public function runInFolder($folder, $suffix = '', $prefix = '')
+  public function runInFolder($folder, $prefix = '', $suffix = '')
   {
     if (!$folder) {
       trigger_error('No folder specified', E_USER_WARNING);
