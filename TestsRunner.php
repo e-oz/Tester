@@ -3,7 +3,7 @@ namespace Jamm\Tester;
 
 class TestsRunner
 {
-  public function runInFolder($folder, $prefix = '', $suffix = '')
+  public function runInFolder($folder, $prefix = '', $suffix = '', $beforeEach = null, $afterEach = null)
   {
     if (!$folder) {
       trigger_error('No folder specified', E_USER_WARNING);
@@ -26,8 +26,14 @@ class TestsRunner
           continue;
         }
         if (($Test instanceof ClassTest) && get_class($Test) !== 'Jamm\\Tester\\ClassTest') {
+          if ($beforeEach && is_callable($beforeEach)){
+            $beforeEach($Test);
+          }
           $Test->RunTests();
           $tests = array_merge($tests, $Test->getTests());
+          if ($afterEach && is_callable($afterEach)){
+            $afterEach($Test);
+          }
         }
       }
     }
